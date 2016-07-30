@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>UiA Timeplaner</title>
     <link rel="stylesheet" href="/static/semantic.min.css">
     <style>
@@ -12,11 +13,6 @@
         .top-video {
             width: 100%;
             height: 250px;
-        }
-
-        .divider.header {
-            margin-top: 2rem;
-            margin-bottom: 2rem;
         }
 
         .course-label {
@@ -35,12 +31,10 @@
 {% raw %}
 <div id="app">
     <div class="ui container">
-        <h1 class="ui horizontal divider header">
-            Uoffisielle timeplaner for UiA
-        </h1>
-
-        <div class="ui grid">
+        <div class="ui stackable grid">
             <div class="ui ten wide column">
+                <h1>Uoffisielle timeplaner for UiA</h1>
+
                 <h3>Hva er dette?</h3>
                 <p>
                     Denne siden samler sammen timeplanene fra
@@ -64,7 +58,7 @@
             </div>
         </div>
         <div class="ui horizontal divider"></div>
-        <div class="ui grid">
+        <div class="ui stackable grid">
             <div class="ui twelve wide column">
                 <div class="ui segments">
                     <div class="ui secondary segment">
