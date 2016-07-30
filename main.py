@@ -55,7 +55,7 @@ def courses_ics(courses):
 
     cal = Calendar()
     cal.add('prodid', '-//UiA Timeplaner//timeplaner.olav.it//')
-    cal.add('version', '1.0')
+    cal.add('version', '2.0')
 
     lectures = Lecture.select().where(Lecture.course << courses)
     for lecture in lectures:
