@@ -1,7 +1,8 @@
 from datetime import datetime
 import peewee
+from playhouse.sqlite_ext import SqliteExtDatabase
 
-db = peewee.SqliteDatabase('timetables.db')
+db = SqliteExtDatabase('timetables.db')
 
 
 class Course(peewee.Model):
@@ -14,6 +15,7 @@ class Course(peewee.Model):
 
 
 class Lecture(peewee.Model):
+    id = peewee.IntegerField(primary_key=True)
     course = peewee.ForeignKeyField(Course)
     description = peewee.CharField()
     time_from = peewee.DateTimeField()
@@ -27,10 +29,12 @@ class Lecture(peewee.Model):
 
 def update_course_lectures(course_code, lectures):
     course = Course.get(code=course_code)
+    course.last_update = datetime.now()
+    course.save()
 
     with db.atomic() as txn:
         Lecture.delete().where(Lecture.course == course)
         for lecture in lectures:
-            Lecture.create(course=course, **lecture)
-            course.last_update = datetime.now()
-            course.save()
+            uid = lecture['description'] + str(lecture['time_from'])
+            Lecture.create(id=abs(hash(uid)), course=course, **lecture)
+

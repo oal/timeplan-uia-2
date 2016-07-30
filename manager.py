@@ -1,6 +1,8 @@
 from collections import OrderedDict
 
 from datetime import datetime
+
+import pytz
 import requests
 import lxml.html
 from lxml.cssselect import CSSSelector
