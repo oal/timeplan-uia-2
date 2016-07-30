@@ -61,12 +61,10 @@ def courses_ics(courses):
     for lecture in lectures:
         event = Event()
         event.add('uid', '{}@timeplaner.olav.it'.format(lecture.id))
-        event.add('summary', lecture.description)
+        event.add('summary', '{}\n{}'.format(lecture.description, lecture.lecturer))
         event.add('dtstart', lecture.time_from.replace(tzinfo=pytz.timezone('Europe/Oslo')))
         event.add('dtend', lecture.time_to.replace(tzinfo=pytz.timezone('Europe/Oslo')))
 
-        if lecture.lecturer:
-            event.add('organizer', lecture.lecturer)
         if lecture.location:
             event.add('location', lecture.location)
 
