@@ -4,7 +4,7 @@ from playhouse.sqlite_ext import SqliteExtDatabase
 
 db = SqliteExtDatabase('timetables.db')
 
-
+# Models
 class Course(peewee.Model):
     code = peewee.CharField(primary_key=True)
     name = peewee.CharField()
@@ -28,6 +28,13 @@ class Lecture(peewee.Model):
 
 
 def update_course_lectures(course_code, lectures):
+    """
+    Takes a course code and list of lectures, then deletes all existing lectures for this course,
+    and re-inserts the new (updated) lectures.
+
+    :param course_code: str
+    :param lectures: list
+    """
     course = Course.get(code=course_code)
     course.last_update = datetime.now()
     course.save()
@@ -35,6 +42,7 @@ def update_course_lectures(course_code, lectures):
     with db.atomic() as txn:
         Lecture.delete().where(Lecture.course == course)
         for lecture in lectures:
+            # Each VEVENT needs an ID. Hash lecture description and start time to get a huge integer.
             uid = lecture['description'] + str(lecture['time_from'])
             Lecture.create(id=abs(hash(uid)), course=course, **lecture)
 
