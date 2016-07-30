@@ -9,6 +9,11 @@
             padding: 3rem 1rem 1rem 1rem;
         }
 
+        .top-video {
+            width: 100%;
+            height: 250px;
+        }
+
         .divider.header {
             margin-top: 2rem;
             margin-bottom: 2rem;
@@ -33,13 +38,31 @@
         <h1 class="ui horizontal divider header">
             Uoffisielle timeplaner for UiA
         </h1>
-        <p>
-            Denne siden samler sammen timeplanene fra <a href="http://timeplan.uia.no/swsuiah/public/no/default.aspx" target="_blank">Universitetet i Agder sine nettsider</a>, og gjør dem tilgjengelig i iCal-format.
-            Dette kan du importere inn i de fleste kalender-applikasjoner på smarttelefoner, PC eller Mac.
-        </p>
-        <p>
-            Merk at timeplanene kun gjelder for ett semester, så du må hente ny kalenderfil ved semesterstart.
-        </p>
+
+        <div class="ui grid">
+            <div class="ui ten wide column">
+                <h3>Hva er dette?</h3>
+                <p>
+                    Denne siden samler sammen timeplanene fra
+                    <a href="http://timeplan.uia.no/swsuiah/public/no/default.aspx" target="_blank">
+                        Universitetet i Agder sine nettsider
+                    </a>, og gjør dem tilgjengelig i iCal-format. Dette kan du importere inn i de
+                    fleste kalender-applikasjoner på smarttelefoner, PC eller Mac.
+                </p>
+                <p>
+                    Merk at timeplanene kun gjelder for ett semester, så du må hente ny kalenderfil
+                    ved semesterstart.
+                </p>
+                <p>
+                    <strong>
+                        Se hvordan du legger til timeplaner i kalender-appen på Mac i videoen til høyre.
+                    </strong>
+                </p>
+            </div>
+            <div class="ui six wide column">
+                <iframe class="top-video" src="https://www.youtube.com/embed/2AkWul8BLbI" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
         <div class="ui horizontal divider"></div>
         <div class="ui grid">
             <div class="ui twelve wide column">
@@ -132,7 +155,7 @@
             },
             computed: {
                 filteredCourses: function() {
-                    var filter = this.filter;
+                    var filter = this.filter.toLowerCase();
                     if(filter.length === 0) {
                         return this.courses;
                     }

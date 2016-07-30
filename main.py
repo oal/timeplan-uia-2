@@ -47,6 +47,9 @@ def courses_ics(courses):
     course_codes = courses.split('+')
 
     courses = Course.select().where(Course.code << course_codes)
+    if len(courses) > 5:
+        return Response('Too many courses selected', status=400)
+
     for course in courses:
         if course.last_update < datetime.now() - timedelta(days=2):
             lectures = manager.load_lectures(course.code)
