@@ -79,6 +79,15 @@ def courses_ics(courses):
     cal.add('prodid', '-//UiA Timeplaner//timeplaner.olav.it//')
     cal.add('version', '2.0')
 
+    # Set a name for the calendar.
+    calendar_name = 'Timeplan for '
+    if len(courses) == 1:
+        calendar_name += courses[0].name
+    else:
+        calendar_name += ', '.join(course_codes[0:-1]) + ' og ' + course_codes[-1]
+
+    cal.add('name', calendar_name)
+
     # Load all lectures from DB and add them to the calendar.
     # Feel free to improve this, I'm not that familiar with the iCal spec.
     lectures = Lecture.select().where(Lecture.course << courses).order_by(Lecture.time_from.asc())
