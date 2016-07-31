@@ -40,7 +40,7 @@ def update_course_lectures(course_code, lectures):
     course.save()
 
     with db.atomic() as txn:
-        Lecture.delete().where(Lecture.course == course)
+        Lecture.delete().where(Lecture.course == course).execute()
         for lecture in lectures:
             # Each VEVENT needs an ID. Hash lecture description and start time to get a huge integer.
             uid = lecture['description'] + str(lecture['time_from'])
