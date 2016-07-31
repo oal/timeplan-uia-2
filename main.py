@@ -11,16 +11,16 @@ from icalendar import Event
 
 from manager import TimeTableManager
 from models import db, Course, Lecture, update_course_lectures
+import config
 
 app = Flask(__name__)
 
 # Manager
-# TODO: Provide a config file instead of hard coding year and weeks here.
 manager = TimeTableManager(
-    week_range=range(32, 52),
-    year=2016,
-    list_url='http://timeplan.uia.no/swsuiah/restrict/no/default.aspx',
-    show_url='http://timeplan.uia.no/swsuiah/XMLEngine/default.aspx'
+    week_range=config.WEEKS,
+    year=config.YEAR,
+    list_url=config.LIST_URL,
+    show_url=config.SHOW_URL
 )
 
 # DB setup, create tables if they don't already exist.
