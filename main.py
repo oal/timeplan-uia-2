@@ -81,7 +81,7 @@ def courses_ics(courses):
 
     # Load all lectures from DB and add them to the calendar.
     # Feel free to improve this, I'm not that familiar with the iCal spec.
-    lectures = Lecture.select().where(Lecture.course << courses)
+    lectures = Lecture.select().where(Lecture.course << courses).order_by(Lecture.time_from.asc())
     for lecture in lectures:
         event = Event()
         event.add('uid', '{}@timeplaner.olav.it'.format(lecture.id))
