@@ -17,7 +17,7 @@ app = Flask(__name__)
 # Manager
 # TODO: Provide a config file instead of hard coding year and weeks here.
 manager = TimeTableManager(
-    week_range=range(33, 51),
+    week_range=range(32, 52),
     year=2016,
     list_url='http://timeplan.uia.no/swsuiah/restrict/no/default.aspx',
     show_url='http://timeplan.uia.no/swsuiah/XMLEngine/default.aspx'
