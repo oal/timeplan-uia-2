@@ -2,7 +2,6 @@ import json
 from datetime import datetime, timedelta
 
 import peewee
-import pytz
 from flask import Flask
 from flask import Response
 from flask import render_template
@@ -87,6 +86,7 @@ def courses_ics(courses):
         calendar_name += ', '.join(course_codes[0:-1]) + ' og ' + course_codes[-1]
 
     cal.add('name', calendar_name)
+    cal.add('tz', '+00')
 
     # Load all lectures from DB and add them to the calendar.
     # Feel free to improve this, I'm not that familiar with the iCal spec.
@@ -95,8 +95,8 @@ def courses_ics(courses):
         event = Event()
         event.add('uid', '{}@timeplaner.olav.it'.format(lecture.id))
         event.add('summary', '{}\n{}'.format(lecture.description, lecture.lecturer))
-        event.add('dtstart', lecture.time_from.replace(tzinfo=pytz.timezone('Europe/Oslo')))
-        event.add('dtend', lecture.time_to.replace(tzinfo=pytz.timezone('Europe/Oslo')))
+        event.add('dtstart', lecture.time_from)
+        event.add('dtend', lecture.time_to)
 
         if lecture.location:
             event.add('location', lecture.location)
