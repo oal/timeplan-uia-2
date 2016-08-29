@@ -87,6 +87,7 @@ def courses_ics(courses):
 
     cal.add('name', calendar_name)
     cal.add('tz', '+00')
+    cal.add('x-wr-timezone', 'Europe/Oslo')
 
     # Load all lectures from DB and add them to the calendar.
     # Feel free to improve this, I'm not that familiar with the iCal spec.
