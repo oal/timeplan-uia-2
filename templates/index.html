@@ -12,7 +12,7 @@
 
         .top-video {
             width: 100%;
-            height: 250px;
+            height: 240px;
         }
 
         .course-label {
@@ -22,13 +22,13 @@
         }
 
         .course-results {
-            height: 500px;
+            height: 550px;
             overflow-y: scroll;
         }
     </style>
 </head>
 <body>
-{% raw %}
+
 <div id="app">
     <div class="ui container">
         <div class="ui stackable grid">
@@ -38,9 +38,8 @@
                 <h3>Hva er dette?</h3>
                 <p>
                     Denne siden samler sammen timeplanene fra
-                    <a href="http://timeplan.uia.no/swsuiah/public/no/default.aspx" target="_blank">
-                        Universitetet i Agder sine nettsider
-                    </a>, og gjør dem tilgjengelig i iCal-format. Dette kan du importere inn i de
+                    <a href="http://timeplan.uia.no/swsuiah/public/no/default.aspx" target="_blank">Universitetet i Agder sine nettsider</a>,
+                    og gjør dem tilgjengelig i iCal-format. Dette kan du importere inn i de
                     fleste kalender-applikasjoner på smarttelefoner, PC eller Mac.
                 </p>
                 <p>
@@ -58,6 +57,7 @@
             </div>
         </div>
         <div class="ui horizontal divider"></div>
+        {% raw %}
         <div class="ui stackable grid">
             <div class="ui twelve wide column">
                 <div class="ui segments">
@@ -109,6 +109,29 @@
                     </div>
                 </div>
 
+                <div class="ui center aligned blue segment">
+                    {% endraw %}
+                    <h4>Fag / timeplaner hentet ut</h4>
+                    <div class="ui horizontal statistic">
+                        <div class="value">
+                            {{ stats_week.0.num_requests }}
+                        </div>
+                        <div class="label">
+                            siste uke
+                        </div>
+                    </div>
+                    <div class="ui horizontal statistic">
+                        <div class="value">
+                            {{ stats_total.0.num_requests }}
+                        </div>
+                        <div class="label">
+                            totalt
+                        </div>
+                    </div>
+                    <small><em>siden 29. august 2016</em></small>
+                    {% raw %}
+                </div>
+
                 <small>
                     <p>
                         Tjenesten er utviklet av <a href="https://lindekleiv.com/">Olav Lindekleiv</a>, og koden er
@@ -122,10 +145,10 @@
                 </small>
             </div>
         </div>
-
+        {% endraw %}
     </div>
 </div>
-{% endraw %}
+
 
 <script src="/static/vue.min.js"></script>
 <script>
@@ -149,13 +172,13 @@
             },
             computed: {
                 filteredCourses: function() {
-                    var filter = this.filter.toLowerCase();
+                    var filter = this.filter.toLowerCase().replace('-', '');
                     if(filter.length === 0) {
                         return this.courses;
                     }
 
                     return this.courses.filter(function(course) {
-                        return course.code.toLowerCase().indexOf(filter) !== -1 || course.name.toLowerCase().indexOf(filter) !== -1
+                        return course.code.toLowerCase().replace('-', '').indexOf(filter) !== -1 || course.name.toLowerCase().replace('-', '').indexOf(filter) !== -1
                     })
                 },
                 calendarURL: function() {

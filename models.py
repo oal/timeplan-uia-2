@@ -4,6 +4,7 @@ from playhouse.sqlite_ext import SqliteExtDatabase
 
 db = SqliteExtDatabase('timetables.db')
 
+
 # Models
 class Course(peewee.Model):
     code = peewee.CharField(primary_key=True)
@@ -46,3 +47,11 @@ def update_course_lectures(course_code, lectures):
             uid = lecture['description'] + str(lecture['time_from'])
             Lecture.create(id=abs(hash(uid)), course=course, **lecture)
 
+
+class Request(peewee.Model):
+    id = peewee.IntegerField(primary_key=True)
+    course = peewee.ForeignKeyField(Course)
+    time = peewee.DateTimeField(default=datetime.now)
+
+    class Meta:
+        database = db

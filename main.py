@@ -9,7 +9,7 @@ from icalendar import Calendar
 from icalendar import Event
 
 from manager import TimeTableManager
-from models import db, Course, Lecture, update_course_lectures
+from models import db, Course, Lecture, update_course_lectures, Request
 import config
 
 app = Flask(__name__)
@@ -34,6 +34,10 @@ try:
 except peewee.OperationalError:
     print('DB already created')
 
+try:
+    db.create_tables([Request])
+except peewee.OperationalError:
+    print('Request tracking table already created')
 
 # Routes
 @app.route('/')
@@ -45,7 +49,21 @@ def index():
     """
 
     courses = json.dumps([{'code': c.code, 'name': c.name} for c in Course.select()])
-    return render_template('index.html', courses=courses)
+
+    now = datetime.now()
+    stats_week = Request\
+        .select(peewee.fn.COUNT(Request.id).alias('num_requests'))\
+        .where(Request.time > now - timedelta(days=7))
+
+    stats_total = Request\
+        .select(peewee.fn.COUNT(Request.id).alias('num_requests'))
+
+    return render_template(
+        'index.html',
+        courses=courses,
+        stats_week=stats_week,
+        stats_total=stats_total,
+    )
 
 
 @app.route('/<courses>.ics')
@@ -103,6 +121,11 @@ def courses_ics(courses):
             event.add('location', lecture.location)
 
         cal.add_component(event)
+
+    # Traffic tracking
+    with db.atomic() as txn:
+        for c in courses:
+            Request.create(course=c)
 
     return Response(cal.to_ical(), content_type='text/calendar; charset=utf-8')
 
